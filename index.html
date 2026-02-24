@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gaia Green Grow Console</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#050b08;
+  --panel:#000000;
+  --border:rgb(112, 124, 0);
+  --text:#fafafa;
+  --muted:rgb(252, 252, 252);
+  --accent:#009207;
+  --accent2:#969900;
+}
+*{box-sizing:border-box;margin:0;padding:0;font-family:"Inter",sans-serif}
+body{
+  background:
+    radial-gradient(900px 600px at 20% 10%, rgb(0, 0, 0), transparent 80%),
+    radial-gradient(circle at top, #000000da, var(--bg));
+  color:var(--text);
+  padding:40px;
+}
+.wrapper{
+  max-width:1500px;
+  margin:auto;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:30px;
+}
+.panel{
+  background:linear-gradient(145deg,#000000,#000000);
+  border:1px solid var(--border);
+  border-radius:20px;
+  padding:28px;
+}
+.title{
+  font-size:13px;
+  letter-spacing:2px;
+  font-weight:800;
+  color:#ffffff;
+  margin-bottom:20px;
+}
+.label{
+  font-size:12px;
+  color:var(--muted);
+  margin-bottom:6px;
+}
+input,select{
+  width:100%;
+  padding:14px;
+  background:#000000;
+  border:1px solid var(--border);
+  border-radius:14px;
+  color:var(--text);
+  margin-bottom:18px;
+}
+.grid2{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:15px;
+}
+button{
+  width:100%;
+  padding:16px;
+  border-radius:999px;
+  border:none;
+  background:linear-gradient(90deg,var(--accent),var(--accent2));
+  color:#ffffff;
+  font-weight:800;
+  letter-spacing:1px;
+  cursor:pointer;
+}
+.cards{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:18px;
+}
+.card{
+  background:#000000;
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:20px;
+}
+.hidden{display:none;}
+.cardTitle{
+  font-size:11px;
+  opacity:.5;
+  margin-bottom:8px;
+  text-transform:uppercase;
+}
+.big{font-size:28px;font-weight:800;}
+.sub{font-size:12px;opacity:.9;margin-top:6px;line-height:1.6}
+@media(max-width:1000px){
+  .wrapper{grid-template-columns:1fr}
+}
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="app-header">
+  <h1 style="
+    font-family:'Cinzel Decorative', serif;
+    font-size:34px;
+    letter-spacing:3px;
+    background:linear-gradient(90deg,#058a00,#749400);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    text-align:center;
+    margin-bottom:40px;
+  ">
+    Grown Underground Gaia Green Calculator
+  </h1>
+</div>
+
+
+<div class="wrapper">
+
+  <div class="panel">
+    <div class="title">OPERATOR INPUTS</div>
+
+    <div class="label">Soil Type</div>
+    <select id="soilType" onchange="calculate()">
+      <option>Royal Gold King’s Mix</option>
+      <option>Royal Gold Mendo Mix</option>
+      <option>Royal Gold Basement Mix</option>
+      <option>Royal Gold Tupur</option>
+      <option>Royal Gold Coco Fiber</option>
+      <option>Royal Gold Coco & Perlite 70/30</option>
+
+      <option>FoxFarm Ocean Forest Potting Soil</option>
+      <option>FoxFarm Happy Frog Potting Soil</option>
+      <option>FoxFarm Strawberry Fields Fruiting & Flowering Potting Soil</option>
+      <option>FoxFarm Salamander Soil Potting Mix</option>
+      <option>FoxFarm Bush Doctor Coco Loco Potting Mix</option>
+      <option>FoxFarm Cultivation Nation Seventy Thirty Growing Media</option>
+      <option>FoxFarm Cream of the Crop 50/50 Growing Media</option>
+
+      <option>Roots Organics Original Potting Soil</option>
+      <option>Roots Organics Formula 707</option>
+      <option>Roots Organics Lush</option>
+
+      <option>Coast of Maine Stonington Blend Grower’s Mix</option>
+      <option>Coast of Maine Bar Harbor Blend Potting Soil</option>
+
+      <option>BuildASoil Potting Soil Recipe 3.0</option>
+      <option>BuildASoil Light Recipe</option>
+
+      <option>PRO-MIX BX</option>
+      <option>PRO-MIX HP</option>
+      <option>PRO-MIX HPCC Biofungicide + Mycorrhizae</option>
+      <option>PRO-MIX MPX</option>
+
+      <option>Mother Earth Groundswell Performance Soil</option>
+      <option>Mother Earth Terracraft Potting Soil</option>
+
+      <option>BioBizz Light-Mix</option>
+      <option>BioBizz All-Mix</option>
+      <option>BioBizz All-Mix Peat Free</option>
+
+      <option>CANNA Terra Professional</option>
+      <option>CANNA Terra Professional Plus</option>
+
+      <option>Plagron Lightmix</option>
+      <option>Plagron Allmix</option>
+      <option>Plagron Batmix</option>
+      <option>Plagron Royalmix</option>
+
+      <option>Atami Janeco Lightmix</option>
+      <option>Atami Allmix</option>
+
+      <option>Floragard Professional Growmix</option>
+      <option>Floragard TKS 1</option>
+
+      <option>Klasmann-Deilmann TS3</option>
+      <option>Klasmann 420 Substrate</option>
+
+      <option>Gaia Green Living Soil</option>
+      <option>Stepwell Super Soil</option>
+      <option>Sea Soil Original</option>
+      <option>Black Swallow Living Soil</option>
+
+      <option>Dr Greenthumbs Turbo Dirt</option>
+      <option>Easy As Organics Super Soil</option>
+      <option>High Powered Organics Living Soil</option>
+
+      <option>Purple Cow IndiCanja</option>
+      <option>Nectar For The Gods #4</option>
+      <option>Black Gold Natural & Organic Potting Soil</option>
+
+      <option>Peat Moss + Perlite</option>
+      <option>Peat Moss + Compost</option>
+      <option>Peat + Coco 50/50</option>
+      <option>Peat 70 / Coco 30</option>
+      <option>Peat + Coco + Perlite</option>
+      <option>Pure Coco Coir</option>
+      <option>Coco + Perlite</option>
+      <option>Coco + Peat Blend</option>
+
+      <option>Super Soil Pre-Amended</option>
+      <option>Custom Blend</option>
+    </select>
+
+    <div class="label">Plant Type</div>
+    <select id="plantType" onchange="updateStages()">
+      <option value="photo">Photoperiod</option>
+      <option value="auto">Autoflower</option>
+    </select>
+
+    <div class="label">Soil Volume (Gallons / Pot Size)</div>
+    <input type="number" id="gallons" value="5" min="0" step="0.1" onchange="calculate()">
+
+    <div class="label">Worm Castings</div>
+    <select id="wormSelect" onchange="calculate()">
+      <option value="off">Off</option>
+      <option value="on">On</option>
+    </select>
+
+    <div class="grid2">
+      <div>
+        <div class="label">Application Method</div>
+        <select id="application" onchange="calculate()">
+          <option value="premix">Pre Mix (Soil Amending)</option>
+          <option value="topdress">Top Dress (Surface Application)</option>
+        </select>
+      </div>
+      <div>
+        <div class="label">Feeding Intensity</div>
+        <select id="rate" onchange="calculate()">
+          <option value="standard">Standard</option>
+          <option value="light">Light</option>
+          <option value="heavy">Heavy</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="label">Stage</div>
+    <select id="stage" onchange="calculate()"></select>
+
+    <button onclick="calculate()">CALCULATE</button>
+  </div>
+
+  <div class="panel">
+    <div class="title">AMENDMENT READOUT</div>
+
+    <div class="cards">
+
+      <div class="card">
+        <div class="cardTitle">Total Gaia Amendment</div>
+        <div class="big" id="totalTbsp">0 tbsp</div>
+        <div class="sub" id="totalG">0 g</div>
+      </div>
+
+      <div class="card">
+        <div class="cardTitle">Blend Ratio</div>
+        <div class="big" id="ratioText">-</div>
+        <div class="sub">4-4-4 / 2-8-4</div>
+      </div>
+
+      <div class="card">
+        <div class="cardTitle">4-4-4 Amount</div>
+        <div class="big" id="apTbsp">0 tbsp</div>
+        <div class="sub" id="apG">0 g</div>
+      </div>
+
+      <div class="card">
+        <div class="cardTitle">2-8-4 Amount</div>
+        <div class="big" id="pbTbsp">0 tbsp</div>
+        <div class="sub" id="pbG">0 g</div>
+      </div>
+
+      <div class="card hidden" id="wormCard">
+        <div class="cardTitle">Worm Castings</div>
+        <div class="big" id="wormCups">0 cups</div>
+        <div class="sub">Measured as volume guidance, adjust by texture and moisture goals.</div>
+      </div>
+
+      <div class="card">
+        <div class="cardTitle">Grow Guidance</div>
+        <div class="sub" id="growTips"></div>
+      </div>
+
+      <div class="card">
+        <div class="cardTitle">System Advisory</div>
+        <div class="sub" id="systemAdvisory">No active advisories.</div>
+      </div>
+
+      <div class="card">
+        <div class="cardTitle">Water pH Range</div>
+        <div class="sub" id="phDisplay"></div>
+      </div>
+
+      <div class="card">
+        <div class="cardTitle">Target PPM Range</div>
+        <div class="sub" id="ppmDisplay"></div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<script>
+const gramsPerTbsp = 15;
+const rateMultiplier = { standard: 1, light: 0.75, heavy: 1.25 };
+
+const photoStages = {
+  veg:        { perGallon: 1.5, ap: 0.6666667, pb: 0.3333333, label: "66% / 33%" },
+  midVeg:     { perGallon: 1.5, ap: 0.6,       pb: 0.4,       label: "60% / 40%" },
+  transition: { perGallon: 1.5, ap: 0.5,       pb: 0.5,       label: "50% / 50%" },
+  earlyBloom: { perGallon: 1.5, ap: 0.5,       pb: 0.5,       label: "50% / 50%" },
+  midBloom:   { perGallon: 1.5, ap: 0.3333333, pb: 0.6666667, label: "33% / 66%" },
+  lateBloom:  { perGallon: 1.5, ap: 0.25,      pb: 0.75,      label: "25% / 75%" }
+};
+
+const autoStages = {
+  veg:   { perGallon: 1.5, ap: 0.6666667, pb: 0.3333333, label: "66% / 33%" },
+  bloom: { perGallon: 1.5, ap: 0.3333333, pb: 0.6666667, label: "33% / 66%" }
+};
+
+function updateStages(){
+  const plantType = document.getElementById("plantType").value;
+  const stageSelect = document.getElementById("stage");
+  stageSelect.innerHTML = "";
+
+  const stages = plantType === "photo" ? photoStages : autoStages;
+  for(const key in stages){
+    const opt = document.createElement("option");
+    opt.value = key;
+    opt.textContent = key.replace(/([A-Z])/g, " $1").replace(/^./, s => s.toUpperCase());
+    stageSelect.appendChild(opt);
+  }
+  calculate();
+}
+
+function calculate(){
+  const gallons = parseFloat(document.getElementById("gallons").value) || 0;
+  const plantType = document.getElementById("plantType").value;
+  const application = document.getElementById("application").value;
+  const rate = document.getElementById("rate").value;
+  const stage = document.getElementById("stage").value;
+  const worm = document.getElementById("wormSelect").value;
+  const soil = document.getElementById("soilType").value;
+
+  const config = plantType === "photo" ? photoStages[stage] : autoStages[stage];
+  if(!config){
+    document.getElementById("systemAdvisory").textContent = "Stage configuration missing, try selecting a stage again.";
+    return;
+  }
+
+  let totalTbsp = gallons * config.perGallon;
+  if(application === "premix") totalTbsp *= 2;
+  totalTbsp *= rateMultiplier[rate];
+
+  const apTbsp = totalTbsp * config.ap;
+  const pbTbsp = totalTbsp * config.pb;
+
+  document.getElementById("totalTbsp").textContent = (Math.round(totalTbsp * 10) / 10) + " tbsp";
+  document.getElementById("totalG").textContent = Math.round(totalTbsp * gramsPerTbsp) + " g";
+
+  document.getElementById("ratioText").textContent = config.label;
+
+  document.getElementById("apTbsp").textContent = (Math.round(apTbsp * 10) / 10) + " tbsp";
+  document.getElementById("apG").textContent = Math.round(apTbsp * gramsPerTbsp) + " g";
+
+  document.getElementById("pbTbsp").textContent = (Math.round(pbTbsp * 10) / 10) + " tbsp";
+  document.getElementById("pbG").textContent = Math.round(pbTbsp * gramsPerTbsp) + " g";
+
+  if(worm === "on"){
+    document.getElementById("wormCard").classList.remove("hidden");
+    const wormCups = gallons * (application === "premix" ? 1 : 0.5) * rateMultiplier[rate];
+    document.getElementById("wormCups").textContent = (Math.round(wormCups * 10) / 10) + " cups";
+  }else{
+    document.getElementById("wormCard").classList.add("hidden");
+  }
+
+  let tips = "";
+  if(stage === "veg") tips = "Early vegetative stage, steady nitrogen, keep medium evenly moist, avoid soaking, allow slight dryback for oxygen.";
+  if(stage === "midVeg") tips = "Mid veg, canopy and roots expand fast, keep airflow strong, watch leaf tone, do not chase deficiencies with heavy jumps.";
+  if(stage === "transition") tips = "Transition, stretch begins, do not overdo nitrogen, keep watering consistent, avoid big changes while plant shifts gears.";
+  if(stage === "earlyBloom") tips = "Early bloom, bud sites set, keep moisture steady, top dress works best with slow watering, avoid overfeeding nitrogen.";
+  if(stage === "midBloom") tips = "Mid bloom, peak demand, keep consistency, do not let pots swing bone dry then soak, keep environment stable.";
+  if(stage === "lateBloom") tips = "Late bloom, reduce nitrogen focus, avoid heavy late feeding, prioritize a clean finish, watch for buildup signs.";
+
+  if(rate === "heavy") tips += " Heavy feeding, watch for tip burn, clawing, and slow dryback.";
+  if(worm === "on") tips += " Worm castings help microbial activity and buffering, keep moisture stable so microbes stay active.";
+
+  document.getElementById("growTips").textContent = tips;
+
+  let advisory = "";
+  const soilLower = soil.toLowerCase();
+
+  if(rate === "heavy" && stage === "lateBloom"){
+    advisory += "Heavy feeding in late bloom can cause nutrient buildup and harsher finish. ";
+  }
+  if(plantType === "auto" && rate === "heavy" && stage === "veg"){
+    advisory += "Autoflowers can stress under heavy early feeding, monitor closely. ";
+  }
+  if(soilLower.includes("super") && application === "premix"){
+    advisory += "Premixing into super soil may overload nutrients. ";
+  }
+  if(soilLower.includes("coco") && worm === "off"){
+    advisory += "Coco based media benefits from microbial support, consider worm castings. ";
+  }
+  if(advisory === "") advisory = "No active advisories.";
+
+  document.getElementById("systemAdvisory").textContent = advisory;
+
+  let medium = "soil";
+  if(soilLower.includes("coco")) medium = "coco";
+  if(soilLower.includes("super") || soilLower.includes("living")) medium = "living";
+
+  let phText = "";
+  if(medium === "soil"){
+    phText = "Soil pH: 6.2 to 6.8, sweet spot 6.3 to 6.5";
+  }
+  if(medium === "coco"){
+    if(stage === "veg" || stage === "midVeg"){
+      phText = "Coco pH: 5.7 to 5.9, veg sweet spot 5.8";
+    }
+    if(stage === "transition" || stage === "earlyBloom"){
+      phText = "Coco pH: 5.8 to 6.0";
+    }
+    if(stage === "midBloom" || stage === "lateBloom" || stage === "bloom"){
+      phText = "Coco pH: 5.9 to 6.2, late bloom drift upward";
+    }
+  }
+  if(medium === "living"){
+    phText = "Living soil pH: 6.3 to 6.8, buffered system";
+  }
+
+  let ppmText = "";
+  if(stage === "veg"){
+    ppmText = "Seedling: 150 to 300 PPM, Early Veg: 400 to 600 PPM";
+  }
+  if(stage === "midVeg"){
+    ppmText = "Mid Veg: 600 to 900 PPM";
+  }
+  if(stage === "transition"){
+    ppmText = "Transition: 700 to 1000 PPM";
+  }
+  if(stage === "earlyBloom"){
+    ppmText = "Early Bloom: 800 to 1100 PPM";
+  }
+  if(stage === "midBloom"){
+    ppmText = "Mid Bloom: 900 to 1200 PPM";
+  }
+  if(stage === "lateBloom"){
+    ppmText = "Late Bloom: 700 to 900 PPM, reduce nitrogen focus";
+  }
+  if(stage === "bloom"){
+    ppmText = "Autoflower Bloom: 800 to 1100 PPM";
+  }
+
+  if(medium === "living"){
+    ppmText = "Living soil uses microbial mineralization, avoid high bottled PPM feeding";
+  }
+
+  document.getElementById("phDisplay").textContent = phText;
+  document.getElementById("ppmDisplay").textContent = ppmText;
+}
+
+updateStages();
+</script>
+
+
+<div style="
+  text-align:center;
+  margin-top:60px;
+  font-size:12px;
+  color:#fefffe;
+  opacity:0.85;
+">
+Made & Created By - StonedCultivator420 | Shout Out To SlippyP For Some Ideas!
+</div>
+
+</body>
+</html>
