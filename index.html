@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gaia Green Grow Console</title>
+<title> Grown Underground Gaia Green Grow Calculator</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -96,6 +96,56 @@ button{
 @media(max-width:1000px){
   .wrapper{grid-template-columns:1fr}
 }
+
+/* polish upgrade */
+body{
+  background:
+    radial-gradient(1000px 700px at 15% 5%, rgba(74,242,162,0.10), transparent 60%),
+    radial-gradient(900px 600px at 100% 0%, rgba(47,217,138,0.08), transparent 45%),
+    linear-gradient(180deg, #0c1713 0%, #08110d 100%);
+}
+.panel{
+  box-shadow: 0 10px 30px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.02);
+}
+.card{
+  box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+}
+.card:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(0,0,0,0.28);
+  border-color: rgba(120,255,180,0.28);
+}
+.title{
+  text-shadow: 0 0 10px rgba(74,242,162,0.10);
+}
+.big{
+  letter-spacing: .3px;
+}
+input,select{
+  transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+}
+input:focus,select:focus{
+  outline: none;
+  border-color: rgba(120,255,180,0.35);
+  box-shadow: 0 0 0 3px rgba(74,242,162,0.08);
+}
+button{
+  box-shadow: 0 8px 18px rgba(0,0,0,0.25);
+  transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
+}
+button:hover{
+  transform: translateY(-1px);
+  filter: brightness(1.03);
+  box-shadow: 0 12px 24px rgba(0,0,0,0.30);
+}
+button:active{
+  transform: translateY(0);
+}
+.app-header h1{
+  text-shadow: 0 2px 10px rgba(0,0,0,0.18);
+}
+
 </style>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&display=swap" rel="stylesheet">
 </head>
@@ -336,6 +386,51 @@ function updateStages(){
   calculate();
 }
 
+
+function formatCupFraction(tbsp){
+  const cups = tbsp / 16;
+  const whole = Math.floor(cups + 1e-9);
+  const frac = cups - whole;
+  const options = [
+    [0, ""],
+    [1/8, "1/8"],
+    [1/4, "1/4"],
+    [1/3, "1/3"],
+    [3/8, "3/8"],
+    [1/2, "1/2"],
+    [5/8, "5/8"],
+    [2/3, "2/3"],
+    [3/4, "3/4"],
+    [7/8, "7/8"],
+    [1, ""]
+  ];
+  let bestVal = 0, bestText = "";
+  let bestDiff = Infinity;
+  for(const [val, label] of options){
+    const diff = Math.abs(frac - val);
+    if(diff < bestDiff){
+      bestDiff = diff;
+      bestVal = val;
+      bestText = label;
+    }
+  }
+  let adjWhole = whole;
+  if(bestVal === 1){
+    adjWhole += 1;
+    bestText = "";
+  }
+  if(adjWhole === 0 && !bestText) return "0";
+  if(adjWhole > 0 && bestText) return adjWhole + " " + bestText;
+  if(adjWhole > 0) return String(adjWhole);
+  return bestText;
+}
+
+function formatAmendment(amountTbsp){
+  return (Math.round(amountTbsp * 100) / 100).toFixed(2) + " tbsp | " +
+    formatCupFraction(amountTbsp) + " US cup" + ((formatCupFraction(amountTbsp) === "1") ? "" : "s") +
+    " | " + Math.round(amountTbsp * gramsPerTbsp) + " g";
+}
+
 function calculate(){
   const gallons = parseFloat(document.getElementById("gallons").value) || 0;
   const plantType = document.getElementById("plantType").value;
@@ -358,21 +453,21 @@ function calculate(){
   const apTbsp = totalTbsp * config.ap;
   const pbTbsp = totalTbsp * config.pb;
 
-  document.getElementById("totalTbsp").textContent = (Math.round(totalTbsp * 10) / 10) + " tbsp";
+    document.getElementById("totalTbsp").textContent = formatAmendment(totalTbsp);
   document.getElementById("totalG").textContent = Math.round(totalTbsp * gramsPerTbsp) + " g";
 
   document.getElementById("ratioText").textContent = config.label;
 
-  document.getElementById("apTbsp").textContent = (Math.round(apTbsp * 10) / 10) + " tbsp";
+    document.getElementById("apTbsp").textContent = formatAmendment(apTbsp);
   document.getElementById("apG").textContent = Math.round(apTbsp * gramsPerTbsp) + " g";
 
-  document.getElementById("pbTbsp").textContent = (Math.round(pbTbsp * 10) / 10) + " tbsp";
+    document.getElementById("pbTbsp").textContent = formatAmendment(pbTbsp);
   document.getElementById("pbG").textContent = Math.round(pbTbsp * gramsPerTbsp) + " g";
 
   if(worm === "on"){
     document.getElementById("wormCard").classList.remove("hidden");
     const wormCups = gallons * (application === "premix" ? 1 : 0.5) * rateMultiplier[rate];
-    document.getElementById("wormCups").textContent = (Math.round(wormCups * 10) / 10) + " cups";
+    document.getElementById("wormCups").textContent = (Math.round(wormCups * 10) / 10) + " US cups";
   }else{
     document.getElementById("wormCard").classList.add("hidden");
   }
@@ -474,8 +569,76 @@ updateStages();
   color:#fefffe;
   opacity:0.85;
 ">
+
+
+
+
+<div class="card" style="margin-top:16px;">
+<h3>MEASUREMENT CONVERSION</h3>
+<div style="font-size:13px;line-height:1.6;">
+1 US Cup = 16 tbsp<br>
+3/4 Cup = 12 tbsp<br>
+2/3 Cup = 10.5 tbsp<br>
+1/2 Cup = 8 tbsp<br>
+1/3 Cup = 5.33 tbsp<br>
+1/4 Cup = 4 tbsp<br>
+1/8 Cup = 2 tbsp
+</div>
+</div>
+
 Made & Created By - StonedCultivator420 | Shout Out To SlippyP For Some Ideas!
 </div>
 
+
+<div style="text-align:center;margin-top:15px;">
+<div style="margin-top:10px"><button onclick="copyResults()" style="
+padding:8px 16px;
+background:#1db954;
+border:none;
+border-radius:6px;
+color:white;
+font-weight:600;
+cursor:pointer;
+">Copy Results</button></div>
+</div>
+
+<script>
+function copyResults(){
+  const total = document.getElementById("totalTbsp")?.innerText || "";
+  const ratio = document.getElementById("ratioText")?.innerText || "";
+  const ap = document.getElementById("apTbsp")?.innerText || "";
+  const pb = document.getElementById("pbTbsp")?.innerText || "";
+  const wormCard = document.getElementById("wormCard");
+  const worm = wormCard && !wormCard.classList.contains("hidden")
+    ? (document.getElementById("wormCups")?.innerText || "")
+    : "";
+  const ph = document.getElementById("phDisplay")?.innerText || "";
+  const ppm = document.getElementById("ppmDisplay")?.innerText || "";
+  const stage = document.getElementById("stage")?.options[document.getElementById("stage")?.selectedIndex]?.text || "";
+  const application = document.getElementById("application")?.options[document.getElementById("application")?.selectedIndex]?.text || "";
+  const gallons = document.getElementById("gallons")?.value || "";
+  const soil = document.getElementById("soilType")?.options[document.getElementById("soilType")?.selectedIndex]?.text || "";
+
+  let output = 
+`Grown Underground Gaia Green Calculator
+
+Soil: ${soil}
+Volume: ${gallons} gal
+Application: ${application}
+Stage: ${stage}
+
+Total Amendment: ${total}
+Blend Ratio: ${ratio}
+4-4-4 Amount: ${ap}
+2-8-4 Amount: ${pb}` + (worm ? `
+Worm Castings: ${worm}` : "") + `
+
+Water pH Range: ${ph}
+Target PPM Range: ${ppm}`;
+
+  navigator.clipboard.writeText(output);
+  alert("Results copied to clipboard");
+}
+</script>
 </body>
 </html>
